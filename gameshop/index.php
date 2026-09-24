@@ -1,3 +1,18 @@
+<?php 
+  // Declaración Variables
+  $plataformas = ["🟦" => "PlayStation 5",
+                  "🟩" => "Xbox Series",
+                  "🔴" => "Nintendo Switch",
+                  "🖥️" => "PC / Steam",
+                  "📱" => "Móvil"
+  ];
+
+  $game_icon = "🧝";
+  $game_platform = "Switch";
+  $game_title = "Zelda: Tears of the Kingdom";
+  $game_genre = "Aventura";
+?>
+
 <!doctype html>
 <html lang="es">
   <head>
@@ -82,35 +97,18 @@
             ====================================================== -->
       <h5 class="mb-3">Explorar por plataforma</h5>
       <div class="row g-3 mb-5">
+        <?php 
+          foreach ($plataformas as $icono => $plataforma) {
+        ?>
         <div class="col-6 col-md-4 col-lg-2">
           <a href="#" class="card text-center text-decoration-none h-100 py-3">
-            <div class="fs-2">🟦</div>
-            <small class="text-muted">PlayStation 5</small>
+            <div class="fs-2"><?php echo "$icono";?></div>
+            <small class="text-muted"><?php echo "$plataforma";?></small>
           </a>
         </div>
-        <div class="col-6 col-md-4 col-lg-2">
-          <a href="#" class="card text-center text-decoration-none h-100 py-3">
-            <div class="fs-2">🟩</div>
-            <small class="text-muted">Xbox Series</small>
-          </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-          <a href="#" class="card text-center text-decoration-none h-100 py-3">
-            <div class="fs-2">🔴</div>
-            <small class="text-muted">Nintendo Switch</small>
-          </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-          <a href="#" class="card text-center text-decoration-none h-100 py-3">
-            <div class="fs-2">🖥️</div>
-            <small class="text-muted">PC / Steam</small>
-          </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-          <a href="#" class="card text-center text-decoration-none h-100 py-3">
-            <div class="fs-2">📱</div>
-            <small class="text-muted">Móvil</small>
-          </a>
+        <?php 
+          }
+        ?>
         </div>
       </div>
       <!-- 3.- Grid de Productos Destacados-->
@@ -128,13 +126,12 @@
               style="height: 120px"
             >
             <?php 
-              $game_icon = "🧝";
               echo "$game_icon";
             ?>
               <!-- Badge de plataforma (esquina superior izquierda) -->
               <div class="position-absolute top-0 start-0 m-2">
                 <?php 
-                  $game_platform = "Switch";
+                  
                   echo "<span class=\"badge text-bg-success\">$game_platform</span>";
                 ?>
               </div>
@@ -146,8 +143,7 @@
             <!-- Cuerpo de la card -->
             <div class="card-body d-flex flex-column">
               <?php 
-                $game_title = "Zelda: Tears of the Kingdom";
-                $game_genre = "Aventura";
+                
                 echo "<h6 class=\"card-title mb-1\">$game_title</h6>";
                 echo "<small class=\"text-muted\">$game_genre</small>";
               ?>
