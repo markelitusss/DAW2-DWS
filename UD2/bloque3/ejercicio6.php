@@ -29,7 +29,7 @@
                 }
             }
         }
-
+        
         // genera una tabla con la matriz
         echo "<table>";
 
