@@ -13,5 +13,5 @@
 
     //Para cuando nuestra web está en subcarpeta 
     //IMPORTANTE!!!! (pon la ruta a tu subcarpeta)
-    define('BASE_URL',"http://localhost/curso2627/gameshop");
+    define('BASE_URL',"http://localhost/gameshop");
 ?>
