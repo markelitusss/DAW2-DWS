@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 8</title>
+    <style>
+        .smallest {
+            color: green;
+        }
+
+        .biggest {
+            color: blue;
+        }
+    </style>
 </head>
 <body>
     <h1>Ejercicio 8</h1>
@@ -44,22 +53,70 @@
             }
         }
 
+        // busca el número más grande y el más pequeño
+        $biggest = 0;
+        $smallest = 1000;
+        $filaSmallest = 0;
+        $columnaBiggest = 0;
+        $filaCount = 0;
+        $columnaCount = 0;
+
+        foreach ($matriz as $fila) {
+
+            $columnaCount = 0;
+
+            foreach($fila as $celda) {
+                if ($celda > $biggest) {
+                    $biggest = $celda;
+                    $columnaBiggest = $columnaCount;
+                }
+                
+                if ($celda < $smallest) {
+                    $smallest = $celda;
+                    $filaSmallest = $filaCount;
+                }
+
+                $columnaCount++;
+            }
+
+            $filaCount++;
+        }
+
+        $filaCount = 0;
+        $columnaCount = 0;
+
         // genera una tabla con la matriz
+        // cuando encuentra la fila del número más pequeño o la columna del más grande
+        // les añade una etiqueta class al elemento HTML
         echo "<table>";
 
         foreach ($matriz as $fila) {
             
-            echo "<tr>";
+            $columnaCount = 0;
+
+            if ($filaCount == $filaSmallest) {
+                echo '<tr class="smallest">';
+            }
+            else {
+                echo "<tr>";
+            }
 
             foreach ($fila as $celda) {
-                echo "<td>$celda</td>";
+                if ($columnaCount == $columnaBiggest) {
+                    echo '<td class="biggest">'.$celda.'</td>';
+                }
+                else {
+                    echo "<td>$celda</td>";
+                }
+                
+                $columnaCount++;
             }
 
             echo "</tr>";
+            $filaCount++;
         }
 
         echo "</table>";
-
         
     ?>
 </body>
