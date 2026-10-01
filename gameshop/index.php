@@ -9,12 +9,51 @@ $plataformas = [
   "📱" => "Móvil"
 ];
 
-$game_icon = "🧝";
-$game_platform = "Switch";
-$game_title = "Zelda: Tears of the Kingdom";
-$game_genre = "Aventura";
+$juegos = array(
+  [
+    "id" => 1,
+    "game_icon" => "🧝",
+    "game_platform" => "Switch",
+    "game_title" => "Zelda: Tears of the Kinghdom",
+    "game_genre" => "Aventura",
+    "precio" => 70,
+    "descuento" => 10,
+    "destacado" => true
+  ],
+  [
+    "id" => 2,
+    "game_icon" => "⚔️",
+    "game_platform" => "PS5",
+    "game_title" => "Elden Ring",
+    "game_genre" => "RPG",
+    "precio" => 49.99,
+    "descuento" => 10,
+    "destacado" => true
+  ],
+  [
+    "id" => 3,
+    "game_icon" => "⚽",
+    "game_platform" => "Xbox",
+    "game_title" => "EA Sports FC 25",
+    "game_genre" => "Deportes",
+    "precio" => 39.99,
+    "descuento" => 0,
+    "destacado" => true
+  ],
+  [
+    "id" => 4,
+    "game_icon" => "🌆",
+    "game_platform" => "PS5",
+    "game_title" => "Cyberpunk 2077",
+    "game_genre" => "RPG",
+    "precio" => 39.99,
+    "descuento" => 30,
+    "destacado" => true
+  ]
+);
 
 require_once("includes/header.php");
+require_once("includes/funciones.php");
 ?>
 <main class="container my-4">
   <!-- 2.- Sección Hero más categorías-->
@@ -60,6 +99,9 @@ require_once("includes/header.php");
     <a href="#" class="btn btn-sm btn-outline-secondary">Ver todos →</a>
   </div>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
+    <?php 
+      foreach ($juegos as $juego) {
+    ?>
     <!-- Col 1-->
     <div class="col">
       <div class="card h-100 shadow-sm">
@@ -68,34 +110,42 @@ require_once("includes/header.php");
           class="card-img-top bg-light d-flex align-items-center justify-content-center fs-1 position-relative"
           style="height: 120px">
           <?php
-          echo "$game_icon";
+          echo $juego["game_icon"];
           ?>
           <!-- Badge de plataforma (esquina superior izquierda) -->
           <div class="position-absolute top-0 start-0 m-2">
-            <?php
-
-            echo "<span class=\"badge text-bg-success\">$game_platform</span>";
-            ?>
+            <span class="badge <?php echo badge_plataforma($juego["game_platform"]) ?>"><?php echo $juego["game_platform"];?></span>
           </div>
           <!-- Badge OFERTA si tiene precio anterior -->
+           <?php 
+            if ($juego["descuento"] > 0) {
+           ?>
           <div class="position-absolute top-0 end-0 m-2">
-            <span class="badge text-bg-danger">- 10%</span>
+            <span class="badge text-bg-danger"><?php echo "-".$juego["descuento"]."%";?></span>
           </div>
+          <?php } ?>
         </div>
         <!-- Cuerpo de la card -->
         <div class="card-body d-flex flex-column">
-          <?php
-
-          echo "<h6 class=\"card-title mb-1\">$game_title</h6>";
-          echo "<small class=\"text-muted\">$game_genre</small>";
-          ?>
+          <h6 class="card-title mb-1"><?php echo $juego["game_title"];?></h6>
+          <small class="text-muted"><?php echo $juego["game_genre"];?></small>
 
           <!-- Precio -->
           <div
             class="mt-auto pt-3 d-flex justify-content-between align-items-center">
             <div>
-              <span class="fw-semibold text-primary fs-6">59,99 &euro;</span>
-              <small class="text-muted text-decoration-line-through ms-1">70,00 &euro;</small>
+              <?php 
+                if ($juego["descuento"] > 0) {
+              ?>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?> &euro;</span>
+              <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]);?> &euro;</small>
+              <?php 
+                } else {
+              ?>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]);?> &euro;</span>
+              <?php 
+                }
+              ?>
             </div>
             <!-- Botón añadir al carrito-->
             <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
@@ -107,152 +157,7 @@ require_once("includes/header.php");
         </div>
       </div>
     </div>
-
-    <!-- Col 2-->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <!-- Imagen / emoji del juego -->
-        <div
-          class="card-img-top bg-light d-flex align-items-center justify-content-center fs-1 position-relative"
-          style="height: 120px">
-          <?php
-          $game_icon = "⚔️";
-          echo "$game_icon";
-          ?>
-          <!-- Badge de plataforma (esquina superior izquierda) -->
-          <div class="position-absolute top-0 start-0 m-2">
-            <?php
-            $game_platform = "PS5";
-            echo "<span class=\"badge text-bg-primary\">PS5</span>";
-            ?>
-
-          </div>
-          <!-- Badge OFERTA si tiene precio anterior -->
-          <div class="position-absolute top-0 end-0 m-2">
-            <span class="badge text-bg-danger">- 10%</span>
-          </div>
-        </div>
-        <!-- Cuerpo de la card -->
-        <div class="card-body d-flex flex-column">
-          <?php
-          $game_title = "Elder Ring";
-          $game_genre = "RPG";
-          echo "<h6 class=\"card-title mb-1\">$game_title</h6>";
-          echo "<small class=\"text-muted\">$game_genre</small>";
-          ?>
-
-          <!-- Precio -->
-          <div
-            class="mt-auto pt-3 d-flex justify-content-between align-items-center">
-            <div>
-              <span class="fw-semibold text-primary fs-6">39,99 &euro;</span>
-              <small class="text-muted text-decoration-line-through ms-1">49,99 &euro;</small>
-            </div>
-            <!-- Botón añadir al carrito-->
-            <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
-          </div>
-        </div>
-        <!-- Pie de la card: enlace a ficha del producto -->
-        <div class="card-footer bg-transparent">
-          <a href="#" class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Col 3-->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <!-- Imagen / emoji del juego -->
-        <div
-          class="card-img-top bg-light d-flex align-items-center justify-content-center fs-1 position-relative"
-          style="height: 120px">
-          <?php
-          $game_icon = "⚽";
-          echo "$game_icon";
-          ?>
-          <!-- Badge de plataforma (esquina superior izquierda) -->
-          <div class="position-absolute top-0 start-0 m-2">
-            <?php
-            $game_platform = "Xbox";
-            echo "<span class=\"badge text-bg-success\">$game_platform</span>";
-            ?>
-          </div>
-        </div>
-        <!-- Cuerpo de la card -->
-        <div class="card-body d-flex flex-column">
-          <?php
-          $game_title = "EA Sport FC 25";
-          $game_genre = "Deportes";
-          echo "<h6 class=\"card-title mb-1\">$game_title</h6>";
-          echo "<small class=\"text-muted\">$game_genre</small>";
-          ?>
-          <!-- Precio -->
-          <div
-            class="mt-auto pt-3 d-flex justify-content-between align-items-center">
-            <div>
-              <span class="fw-semibold text-primary fs-6">39,99 &euro;</span>
-            </div>
-            <!-- Botón añadir al carrito-->
-            <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
-          </div>
-        </div>
-        <!-- Pie de la card: enlace a ficha del producto -->
-        <div class="card-footer bg-transparent">
-          <a href="#" class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Col 4-->
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <!-- Imagen / emoji del juego -->
-        <div
-          class="card-img-top bg-light d-flex align-items-center justify-content-center fs-1 position-relative"
-          style="height: 120px">
-
-          <?php
-          $game_icon = "🌆";
-          echo "$game_icon";
-          ?>
-          <!-- Badge de plataforma (esquina superior izquierda) -->
-          <div class="position-absolute top-0 start-0 m-2">
-            <?php
-            $game_platform = "PS5";
-            echo "<span class=\"badge text-bg-warning\">$game_platform</span>";
-            ?>
-          </div>
-          <!-- Badge OFERTA si tiene precio anterior -->
-          <div class="position-absolute top-0 end-0 m-2">
-            <span class="badge text-bg-danger">- 30%</span>
-          </div>
-        </div>
-        <!-- Cuerpo de la card -->
-        <div class="card-body d-flex flex-column">
-          <?php
-          $game_title = "Cyberpun 2077";
-          $game_genre = "RPG";
-          echo "<h6 class=\"card-title mb-1\">$game_title</h6>";
-          echo "<small class=\"text-muted\">$game_genre</small>";
-          ?>
-          <!-- Precio -->
-          <div
-            class="mt-auto pt-3 d-flex justify-content-between align-items-center">
-            <div>
-              <span class="fw-semibold text-primary fs-6">27,99 &euro;</span>
-              <small class="text-muted text-decoration-line-through ms-1">39,99 &euro;</small>
-            </div>
-            <!-- Botón añadir al carrito-->
-            <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
-          </div>
-        </div>
-        <!-- Pie de la card: enlace a ficha del producto -->
-        <div class="card-footer bg-transparent">
-          <a href="#" class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
-        </div>
-      </div>
-    </div>
-  </div>
+    <?php } ?>
   <!-- 4.- Banner de registro-->
   <div class="card mb-5 border-0 bg-body-secondary">
     <div
