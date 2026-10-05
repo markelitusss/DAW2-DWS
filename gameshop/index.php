@@ -1,4 +1,5 @@
 <?php
+
 // Declaración Variables
 $title = "Inicio";
 $plataformas = [
@@ -18,6 +19,8 @@ $juegos = array(
     "game_genre" => "Aventura",
     "precio" => 70,
     "descuento" => 10,
+    "stock" => 5,
+    "lanzamiento" => '2023-05-12',
     "destacado" => true
   ],
   [
@@ -28,6 +31,8 @@ $juegos = array(
     "game_genre" => "RPG",
     "precio" => 49.99,
     "descuento" => 10,
+    "stock" => 0,
+    "lanzamiento" => '2022-02-25',
     "destacado" => true
   ],
   [
@@ -38,6 +43,8 @@ $juegos = array(
     "game_genre" => "Deportes",
     "precio" => 39.99,
     "descuento" => 0,
+    "stock" => 2,
+    "lanzamiento" => '2024-09-27',
     "destacado" => true
   ],
   [
@@ -48,12 +55,73 @@ $juegos = array(
     "game_genre" => "RPG",
     "precio" => 39.99,
     "descuento" => 30,
+    "stock" => 6,
+    "lanzamiento" => '2020-12-10',
     "destacado" => true
-  ]
+  ],
+  [
+    "id" => 5,
+    "game_icon" => "🧊",
+    "game_platform" => "Movil",
+    "game_title" => "Minecraft: \"Bedrock Edition\"",
+    "game_genre" => "Simulacion",
+    "precio" => 9.99,
+    "descuento" => 20,
+    "stock" => 13,
+    "lanzamiento" => '2019-12-10',
+    "destacado" => false
+  ],
+  [
+    "id" => 6,
+    "game_icon" => "🏰",
+    "game_platform" => "PC",
+    "game_title" => "Kingdom Come Deliverance II",
+    "game_genre" => "Aventura",
+    "precio" => 69.99,
+    "descuento" => 20,
+    "stock" => 8,
+    "lanzamiento" => '2025-02-04',
+    "destacado" => false
+  ],
+  [
+    "id" => 7,
+    "game_icon" => "⚽",
+    "game_platform" => "PS5",
+    "game_title" => "EA Sports FC 27",
+    "game_genre" => "Deportes",
+    "precio" => 69.99,
+    "descuento" => 0,
+    "stock" => 0,
+    "lanzamiento" => '2026-09-25',
+    "destacado" => false
+  ],
+  [
+    "id" => 8,
+    "game_icon" => "🚚",
+    "game_platform" => "PC",
+    "game_title" => "American Truck Simulator",
+    "game_genre" => "Simulacion",
+    "precio" => 19.99,
+    "descuento" => 0,
+    "stock" => 6,
+    "lanzamiento" => '2016-02-02',
+    "destacado" => false
+  ],
 );
 
 require_once("includes/header.php");
 require_once("includes/funciones.php");
+
+// Comprobaciones previas
+assert(count(obtenerDestacados($juegos)) === 4);
+assert(array_keys(obtenerDestacados($juegos)) === [0, 1, 2, 3]);
+assert(precio_formateado(1234.5) === '1.234,50 €');
+assert(estadoStock(0) === 'Agotado');
+assert(estadoStock(3) === 'Últimas unidades');
+assert(generarSlug('Zelda: Tears of the Kingdom') === 'zelda-tears-of-the-kingdom');
+assert(generarSlug(' ¡Hola, mundo! ') === 'hola-mundo');
+
+
 ?>
 <main class="container my-4">
   <!-- 2.- Sección Hero más categorías-->
@@ -137,12 +205,12 @@ require_once("includes/funciones.php");
               <?php 
                 if ($juego["descuento"] > 0) {
               ?>
-              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?> &euro;</span>
-              <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]);?> &euro;</small>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?></span>
+              <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]);?></small>
               <?php 
                 } else {
               ?>
-              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]);?> &euro;</span>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]);?></span>
               <?php 
                 }
               ?>
