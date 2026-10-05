@@ -1,4 +1,5 @@
 <?php
+
 // Declaración Variables
 $title = "Inicio";
 $plataformas = [
@@ -61,7 +62,7 @@ $juegos = array(
   [
     "id" => 5,
     "game_icon" => "🧊",
-    "game_platform" => "Móvil",
+    "game_platform" => "Movil",
     "game_title" => "Minecraft: \"Bedrock Edition\"",
     "game_genre" => "Simulacion",
     "precio" => 9.99,
@@ -110,6 +111,17 @@ $juegos = array(
 
 require_once("includes/header.php");
 require_once("includes/funciones.php");
+
+// Comprobaciones previas
+assert(count(obtenerDestacados($juegos)) === 4);
+assert(array_keys(obtenerDestacados($juegos)) === [0, 1, 2, 3]);
+assert(precio_formateado(1234.5) === '1.234,50 €');
+assert(estadoStock(0) === 'Agotado');
+assert(estadoStock(3) === 'Últimas unidades');
+assert(generarSlug('Zelda: Tears of the Kingdom') === 'zelda-tears-of-the-kingdom');
+assert(generarSlug(' ¡Hola, mundo! ') === 'hola-mundo');
+
+
 ?>
 <main class="container my-4">
   <!-- 2.- Sección Hero más categorías-->
@@ -193,12 +205,12 @@ require_once("includes/funciones.php");
               <?php 
                 if ($juego["descuento"] > 0) {
               ?>
-              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?> &euro;</span>
-              <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]);?> &euro;</small>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?></span>
+              <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]);?></small>
               <?php 
                 } else {
               ?>
-              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]);?> &euro;</span>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]);?></span>
               <?php 
                 }
               ?>
