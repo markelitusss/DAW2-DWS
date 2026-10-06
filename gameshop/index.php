@@ -1,4 +1,5 @@
 <?php
+
 // Declaración Variables
 $title = "Inicio";
 $plataformas = [
@@ -14,10 +15,12 @@ $juegos = array(
     "id" => 1,
     "game_icon" => "🧝",
     "game_platform" => "Switch",
-    "game_title" => "Zelda: Tears of the Kinghdom",
+    "game_title" => "Zelda: Tears of the Kingdom",
     "game_genre" => "Aventura",
     "precio" => 70,
     "descuento" => 10,
+    "stock" => 5,
+    "lanzamiento" => '2023-05-12',
     "destacado" => true
   ],
   [
@@ -28,6 +31,8 @@ $juegos = array(
     "game_genre" => "RPG",
     "precio" => 49.99,
     "descuento" => 10,
+    "stock" => 0,
+    "lanzamiento" => '2022-02-25',
     "destacado" => true
   ],
   [
@@ -38,6 +43,8 @@ $juegos = array(
     "game_genre" => "Deportes",
     "precio" => 39.99,
     "descuento" => 0,
+    "stock" => 2,
+    "lanzamiento" => '2024-09-27',
     "destacado" => true
   ],
   [
@@ -48,12 +55,73 @@ $juegos = array(
     "game_genre" => "RPG",
     "precio" => 39.99,
     "descuento" => 30,
+    "stock" => 6,
+    "lanzamiento" => '2020-12-10',
     "destacado" => true
-  ]
+  ],
+  [
+    "id" => 5,
+    "game_icon" => "🧊",
+    "game_platform" => "Movil",
+    "game_title" => "Minecraft: \"Bedrock Edition\"",
+    "game_genre" => "Simulacion",
+    "precio" => 9.99,
+    "descuento" => 20,
+    "stock" => 13,
+    "lanzamiento" => '2019-12-10',
+    "destacado" => false
+  ],
+  [
+    "id" => 6,
+    "game_icon" => "🏰",
+    "game_platform" => "PC",
+    "game_title" => "Kingdom Come Deliverance II",
+    "game_genre" => "Aventura",
+    "precio" => 69.99,
+    "descuento" => 20,
+    "stock" => 8,
+    "lanzamiento" => '2025-02-04',
+    "destacado" => false
+  ],
+  [
+    "id" => 7,
+    "game_icon" => "⚽",
+    "game_platform" => "PS5",
+    "game_title" => "EA Sports FC 27",
+    "game_genre" => "Deportes",
+    "precio" => 69.99,
+    "descuento" => 0,
+    "stock" => 0,
+    "lanzamiento" => '2026-09-25',
+    "destacado" => false
+  ],
+  [
+    "id" => 8,
+    "game_icon" => "🚚",
+    "game_platform" => "PC",
+    "game_title" => "American Truck Simulator",
+    "game_genre" => "Simulacion",
+    "precio" => 19.99,
+    "descuento" => 0,
+    "stock" => 6,
+    "lanzamiento" => '2016-02-02',
+    "destacado" => false
+  ],
 );
 
 require_once("includes/header.php");
 require_once("includes/funciones.php");
+
+// Comprobaciones previas
+assert(count(obtenerDestacados($juegos)) === 4);
+assert(array_keys(obtenerDestacados($juegos)) === [0, 1, 2, 3]);
+assert(precio_formateado(1234.5) === '1.234,50 €');
+assert(estadoStock(0) === 'Agotado');
+assert(estadoStock(3) === 'Últimas unidades');
+assert(generarSlug('Zelda: Tears of the Kingdom') === 'zelda-tears-of-the-kingdom');
+assert(generarSlug(' ¡Hola, mundo! ') === 'hola-mundo');
+
+
 ?>
 <main class="container my-4">
   <!-- 2.- Sección Hero más categorías-->
@@ -100,7 +168,7 @@ require_once("includes/funciones.php");
   </div>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
     <?php 
-      foreach ($juegos as $juego) {
+      foreach (obtenerDestacados($juegos) as $juego) {
     ?>
     <!-- Col 1-->
     <div class="col">
@@ -110,11 +178,11 @@ require_once("includes/funciones.php");
           class="card-img-top bg-light d-flex align-items-center justify-content-center fs-1 position-relative"
           style="height: 120px">
           <?php
-          echo $juego["game_icon"];
+          echo htmlspecialchars($juego["game_icon"]);
           ?>
           <!-- Badge de plataforma (esquina superior izquierda) -->
           <div class="position-absolute top-0 start-0 m-2">
-            <span class="badge <?php echo badge_plataforma($juego["game_platform"]) ?>"><?php echo $juego["game_platform"];?></span>
+            <span class="badge <?php echo badge_plataforma($juego["game_platform"]) ?>"><?php echo htmlspecialchars($juego["game_platform"]);?></span>
           </div>
           <!-- Badge OFERTA si tiene precio anterior -->
            <?php 
@@ -127,8 +195,8 @@ require_once("includes/funciones.php");
         </div>
         <!-- Cuerpo de la card -->
         <div class="card-body d-flex flex-column">
-          <h6 class="card-title mb-1"><?php echo $juego["game_title"];?></h6>
-          <small class="text-muted"><?php echo $juego["game_genre"];?></small>
+          <h6 class="card-title mb-1"><?php echo htmlspecialchars($juego["game_title"]);?></h6>
+          <small class="text-muted"><?php echo htmlspecialchars($juego["game_genre"]);?></small>
 
           <!-- Precio -->
           <div
@@ -137,27 +205,37 @@ require_once("includes/funciones.php");
               <?php 
                 if ($juego["descuento"] > 0) {
               ?>
-              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?> &euro;</span>
-              <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]);?> &euro;</small>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?></span>
+              <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]);?></small>
               <?php 
                 } else {
               ?>
-              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]);?> &euro;</span>
+              <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]);?></span>
               <?php 
                 }
               ?>
             </div>
             <!-- Botón añadir al carrito-->
-            <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
+             <?php 
+              if ($juego["stock"] > 0) {
+                ?>
+                <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
+              <?php } else { ?>
+                <a href="#" class="btn btn-sm btn-primary disabled">+ Carrito</a>
+              <?php } ?>
           </div>
+          <small class="text-muted"><?php echo estadoStock($juego["stock"]) ?></small>
         </div>
         <!-- Pie de la card: enlace a ficha del producto -->
         <div class="card-footer bg-transparent">
-          <a href="#" class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
+          <a href="<?php echo "producto.php?slug=".generarSlug($juego["game_title"]) ?>" class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
         </div>
       </div>
     </div>
-    <?php } ?>
+    <?php } 
+    // número de juegos y valor del inventario
+      echo "<span>Mostrando ".count(obtenerDestacados($juegos))." de ".count($juegos)." juegos • Valor del inventario: ".precio_formateado(valorInventario($juegos))."</span>";
+    ?>
   <!-- 4.- Banner de registro-->
   <div class="card mb-5 border-0 bg-body-secondary">
     <div
