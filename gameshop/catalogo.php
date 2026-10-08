@@ -1,6 +1,20 @@
 <?php
 $title = "Catálogo";
+$plat = "";
+
 require_once("includes/header.php");
+require_once("includes/funciones.php");
+require_once("includes/datos.php");
+
+if (array_key_exists("plat", $_GET)) {
+    foreach ($plataformas as $icono => $plataforma) {
+        if (htmlspecialchars($_GET["plat"]) == generarSlug($plataforma)) {
+            $plat = $plataforma;
+        }
+    }
+}
+
+$juegosFiltrado = filtrarPorPlataforma($juegos, $plat);
 ?>
 <main class="container my-4">
 
@@ -177,7 +191,7 @@ require_once("includes/header.php");
             <!-- CABECERA: resultados + ordenación -->
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                 <span class="text-muted small">
-                    Mostrando <strong>10 </strong> juegos
+                    Mostrando <strong><?php echo count($juegosFiltrado) ?></strong> juegos
                 </span>
                 <select class="form-select form-select-sm w-auto">
                     <option value="1" selected>Nombre A–Z</option>
@@ -199,98 +213,82 @@ require_once("includes/header.php");
                 <a href="catalogo.html">Ver todos</a>
             </div>
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
+                <?php
+                foreach ($juegosFiltrado as $juego) {
+                ?>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
 
-                        <div class="card-img-top bg-light d-flex align-items-center
+                            <div class="card-img-top bg-light d-flex align-items-center
                               justify-content-center fs-1 position-relative"
-                            style="height:110px">
-                            🍄
-                            <div class="position-absolute top-0 start-0 m-2">
-                                <span class="badge text-bg-success">Switch</span>
-                            </div>
-                        </div>
-
-                        <div class="card-body d-flex flex-column">
-                            <h6 class="card-title mb-1">
-                                Super Mario Odyssey
-                            </h6>
-                            <!-- Estrellas de valoración -->
-                            <div class="text-warning small mb-1">
-                                ★★★★★
-                            </div>
-                            <small class="text-muted">
-                                Plataformas
-                            </small>
-                            <div class="mt-auto pt-3 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-semibold text-primary">
-                                        49,99 €
-                                    </span>
-
+                                style="height:110px">
+                                <?php echo $juego["game_icon"] ?>
+                                <div class="position-absolute top-0 start-0 m-2">
+                                    <span class="badge <?php echo badge_plataforma($juego["game_platform"]) ?>"><?php echo htmlspecialchars($juego["game_platform"]) ?></span>
                                 </div>
-                                <a href="carrito.html"
-                                    class="btn btn-sm btn-primary">+ Carrito</a>
+                                <?php
+                                if ($juego["descuento"] > 0) {
+                                ?>
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge text-bg-danger"><?php echo "-" . $juego["descuento"] . "%"; ?></span>
+                                    </div>
+                                <?php } ?>
                             </div>
-                        </div>
 
-                        <div class="card-footer bg-transparent">
-                            <a href="producto.html"
-                                class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
-                        </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title mb-1">
+                                    <?php echo htmlspecialchars($juego["game_title"]) ?>
+                                </h6>
+                                <!-- Estrellas de valoración -->
+                                <div class="text-warning small mb-1">
+                                    <?php
+                                    $stars = match ($juego["valoracion"]) {
+                                        1 => "★☆☆☆☆",
+                                        2 => "★★☆☆☆",
+                                        3 => "★★★☆☆",
+                                        4 => "★★★★☆",
+                                        5 => "★★★★★"
+                                    };
 
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-img-top bg-light d-flex align-items-center
-                              justify-content-center fs-1 position-relative"
-                            style="height:110px">
-                            ⚔️
-                            <div class="position-absolute top-0 start-0 m-2">
-                                <span class="badge text-bg-primary">PS5</span>
-                            </div>
-                            <div class="position-absolute top-0 end-0 m-2">
-                                <span class="badge text-bg-danger">
-                                    5%
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="card-body d-flex flex-column">
-                            <h6 class="card-title mb-1">
-                                Elden Ring
-                            </h6>
-                            <!-- Estrellas de valoración -->
-                            <div class="text-warning small mb-1">
-                                ★★★★☆
-                            </div>
-                            <small class="text-muted">
-                                RPG
-                            </small>
-                            <div class="mt-auto pt-3 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-semibold text-primary">
-                                        39,99 €
-                                    </span>
-                                    <small class="text-muted text-decoration-line-through ms-1">
-                                        49,99 €
-                                    </small>
+                                    echo $stars
+                                    ?>
                                 </div>
-                                <a href="carrito.html"
-                                    class="btn btn-sm btn-primary">+ Carrito</a>
+                                <small class="text-muted">
+                                    <?php echo htmlspecialchars($juego["game_genre"]) ?>
+                                </small>
+                                <div class="mt-auto pt-3 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <?php
+                                        if ($juego["descuento"] > 0) {
+                                        ?>
+                                            <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"] * (100 - $juego["descuento"]) / 100); ?></span>
+                                            <small class="text-muted text-decoration-line-through ms-1"><?php echo precio_formateado($juego["precio"]); ?></small>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <span class="fw-semibold text-primary fs-6"><?php echo precio_formateado($juego["precio"]); ?></span>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    <?php
+                                    if ($juego["stock"] > 0) {
+                                    ?>
+                                        <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
+                                    <?php } else { ?>
+                                        <a href="#" class="btn btn-sm btn-primary disabled">+ Carrito</a>
+                                    <?php } ?>
+                                </div>
+                                <small class="text-muted"><?php echo estadoStock($juego["stock"]) ?></small>
                             </div>
-                        </div>
 
-                        <div class="card-footer bg-transparent">
-                            <a href="producto.html"
-                                class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
-                        </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="<?php echo "producto.php?slug=".generarSlug($juego["game_title"]) ?>" class="btn btn-sm btn-outline-secondary w-100">Ver ficha</a>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
 
             </div>
 

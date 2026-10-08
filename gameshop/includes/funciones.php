@@ -1,23 +1,23 @@
 <?php 
     declare(strict_types=1);
 
-    function precio_formateado(float $precio) {
+    function precio_formateado(float $precio): string {
         return number_format($precio, 2, ",", '.')." €";
     }
 
-    function badge_plataforma(string $plataforma) {
+    function badge_plataforma(string $plataforma): string {
         $badge = match ($plataforma) {
             "Switch" => "text-bg-danger",
             "PS5" => "text-bg-primary",
             "Xbox" => "text-bg-success",
             "PC" => "text-bg-secondary",
-            "Movil" => "text-bg-info"
+            "Móvil" => "text-bg-info"
         };
 
         return $badge;
     }
 
-    function obtenerDestacados(array $productos) {
+    function obtenerDestacados(array $productos): array {
         $productosDestacados = array();
 
         foreach ($productos as $producto) {
@@ -29,7 +29,7 @@
         return $productosDestacados;
     }
 
-    function estadoStock(int $stock) {
+    function estadoStock(int $stock): string {
         if ($stock == 0) {
             $estadoStock = "Agotado";
         }
@@ -46,7 +46,7 @@
         return $estadoStock;
     }
 
-    function generarSlug(string $titulo) {
+    function generarSlug(string $titulo): string {
         $titulo = trim($titulo);
         $slug = str_replace(array(' ', '\'', '"', ',',':', ';', '<', '>', '&', '$', '!', '¡', '?', '¿'), '-', mb_strtolower($titulo));
         $finalSlug = preg_replace('/-+/', '-', $slug);
@@ -55,7 +55,7 @@
         return $finalSlug;
     }
 
-    function valorInventario(array $productos) {
+    function valorInventario(array $productos): float {
         $suma = 0;
 
         foreach ($productos as $producto) {
@@ -65,4 +65,22 @@
         return $suma;
     }
 
+    function filtrarPorPlataforma(array $productos, string $plataforma = ""): array {
+        $result = array();
+
+        if ($plataforma == "") {
+            $result = $productos;
+        }
+        else {
+            foreach ($productos as $producto) {
+                if ($producto["game_platform"] == $plataforma) {
+                    array_push($result, $producto);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    
 ?>
