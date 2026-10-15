@@ -1,11 +1,31 @@
 <?php 
-    $plataformas = [
-  "🟦" => "PS5",
-  "🟩" => "Xbox",
-  "🔴" => "Switch",
-  "🖥️" => "PC",
-  "📱" => "Móvil"
-    ];
+    $plataformas = array(
+      [
+        "nombre" => "PS5",
+        "nombreSlug" => "ps5",
+        "icono" => "🟦"
+      ],
+      [
+        "nombre" => "Xbox",
+        "nombreSlug" => "xbox",
+        "icono" => "🟩"
+      ],
+      [
+        "nombre" => "Switch",
+        "nombreSlug" => "switch",
+        "icono" => "🔴"
+      ],
+      [
+        "nombre" => "PC",
+        "nombreSlug" => "pc",
+        "icono" => "🖥️"
+      ],
+      [
+        "nombre" => "Móvil",
+        "nombreSlug" => "movil",
+        "icono" => "📱"
+      ]
+  );
 
     $juegos = array(
   [

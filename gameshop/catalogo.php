@@ -7,9 +7,9 @@ require_once("includes/funciones.php");
 require_once("includes/datos.php");
 
 if (array_key_exists("plat", $_GET)) {
-    foreach ($plataformas as $icono => $plataforma) {
-        if (htmlspecialchars($_GET["plat"]) == generarSlug($plataforma)) {
-            $plat = $plataforma;
+    foreach ($plataformas as $plataforma) {
+        if (htmlspecialchars($_GET["plat"]) == $plataforma["nombreSlug"]) {
+            $plat = $plataforma["nombre"];
         }
     }
 }
@@ -44,51 +44,20 @@ $juegosFiltrado = filtrarPorPlataforma($juegos, $plat);
 
                     <!-- PLATAFORMA -->
                     <p class="text-uppercase text-muted small fw-semibold mb-2">Plataforma</p>
-
+                    <?php 
+                        foreach ($plataformas as $plataforma) {
+                    ?>
                     <div class="form-check mb-1">
                         <input class="form-check-input" type="radio"
                             name="plataforma"
-                            value="PS5"
-                            id="plat_PS5">
+                            value="<?php echo $plataforma["nombre"] ?>"
+                            id="<?php echo $plataforma["nombreSlug"] ?>">
                         <label class="form-check-label"
-                            for="plat_PS5">
-                            PS5
+                            for="<?php echo $plataforma["nombreSlug"] ?>">
+                            <?php echo $plataforma["nombre"] ?>
                         </label>
                     </div>
-                    <div class="form-check mb-1">
-                        <input class="form-check-input" type="radio"
-                            name="plataforma"
-                            value="Switch"
-                            id="plat_Switch">
-                        <label class="form-check-label"
-                            for="plat_Switch">
-                            Switch
-                        </label>
-                    </div>
-                    <div class="form-check mb-1">
-                        <input class="form-check-input" type="radio"
-                            name="plataforma"
-                            value="PC"
-                            id="plat_PC">
-                        <label class="form-check-label"
-                            for="plat_PC">
-                            PC
-                        </label>
-                    </div>
-                    <div class="form-check mb-1">
-                        <input class="form-check-input" type="radio"
-                            name="plataforma"
-                            value="XBOX"
-                            id="plat_XBOX">
-                        <label class="form-check-label"
-                            for="plat_XBOX">
-                            XBOX
-                        </label>
-                    </div>
-
-
-
-
+                    <?php } ?>
                     <hr>
 
                     <!-- GÉNERO -->

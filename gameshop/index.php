@@ -39,12 +39,12 @@ assert(generarSlug(' ¡Hola, mundo! ') === 'hola-mundo');
   <h5 class="mb-3">Explorar por plataforma</h5>
   <div class="row g-3 mb-5">
     <?php
-    foreach ($plataformas as $icono => $plataforma) {
+    foreach ($plataformas as $plataforma) {
     ?>
       <div class="col-6 col-md-4 col-lg-2">
-        <a href="catalogo.php?plat=<?php echo generarSlug($plataforma) ?>" class="card text-center text-decoration-none h-100 py-3">
-          <div class="fs-2"><?php echo "$icono"; ?></div>
-          <small class="text-muted"><?php echo "$plataforma"; ?></small>
+        <a href="catalogo.php?plat=<?php echo $plataforma["nombreSlug"] ?>" class="card text-center text-decoration-none h-100 py-3">
+          <div class="fs-2"><?php echo $plataforma["icono"]; ?></div>
+          <small class="text-muted"><?php echo $plataforma["nombre"]; ?></small>
         </a>
       </div>
     <?php
