@@ -243,13 +243,12 @@ $juegosFiltrado = filtrarPorPlataforma($juegos, $plat);
                                     <?php
                                     if ($juego["stock"] > 0) {
                                     ?>
-                                        <a href="carrito.php" class="btn btn-sm btn-primary">
                                         <form action="carrito.php" method="POST">
                                             <input type="hidden" name="accion" value="agregar">
                                             <input type="hidden" name="id" value="<?= $juego["id"] ?>">
                                             <input type="hidden" name="cantidad" value="1">
+                                            <button type="submit" class="btn btn-sm btn-primary">+ Carrito</button>
                                         </form>
-                                        + Carrito</a>
                                     <?php } ?>
                                 </div>
                                 <small class="<?= estadoStock($juego["stock"]) === "Agotado" ? "text-danger fw-bold" : "text-muted"?>"><?php echo estadoStock($juego["stock"]) ?></small>

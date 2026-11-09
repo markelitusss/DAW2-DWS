@@ -83,6 +83,6 @@
     }
 
     function buscarProducto(array $productos, int $id): array {
-        return array_find($productos, function($producto) {return $producto["id"] === $id;});
+        // TODO hacer función
     }
 ?>
