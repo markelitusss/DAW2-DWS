@@ -1,6 +1,10 @@
 <?php
-$title = "Login";
-require_once("includes/header.php");
+  $title = "Login";
+  require_once("includes/header.php");
+
+  if (empty($_SESSION["csrf_token"])) {
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+  }
 ?>
 <main class="container my-4">
   <div class="row justify-content-center">
@@ -13,9 +17,13 @@ require_once("includes/header.php");
 
           <div class="alert alert-danger">email incorrecto</div>
 
-          <form method="POST" action="login.html" novalidate>
-            <input type="hidden" name="csrf_token" value="" />
-
+          <form method="POST" action="myform.php" novalidate>
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"]) ?>" />
+            
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" ariadescribedby="nombreHelp" name="nombre" autofocus required>
+            </div>
             <!-- EMAIL -->
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
@@ -26,7 +34,6 @@ require_once("includes/header.php");
                 class="form-control"
                 value=""
                 autocomplete="email"
-                autofocus
                 required />
             </div>
 

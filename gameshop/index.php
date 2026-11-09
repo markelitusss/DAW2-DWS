@@ -111,11 +111,9 @@ assert(generarSlug(' ¡Hola, mundo! ') === 'hola-mundo');
               if ($juego["stock"] > 0) {
                 ?>
                 <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
-              <?php } else { ?>
-                <a href="#" class="btn btn-sm btn-primary disabled">+ Carrito</a>
               <?php } ?>
           </div>
-          <small class="text-muted"><?php echo estadoStock($juego["stock"]) ?></small>
+          <small class="<?= estadoStock($juego["stock"]) === "Agotado" ? "text-danger fw-bold" : "text-muted"?>"><?php echo estadoStock($juego["stock"]) ?></small>
         </div>
         <!-- Pie de la card: enlace a ficha del producto -->
         <div class="card-footer bg-transparent">

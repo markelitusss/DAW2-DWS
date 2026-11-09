@@ -144,7 +144,7 @@ $juegosFiltrado = filtrarPorPlataforma($juegos, $plat);
                         <button type="submit" class="btn btn-primary btn-sm">
                             Aplicar filtros
                         </button>
-                        <a href="catalogo.html" class="btn btn-outline-secondary btn-sm">
+                        <a href="catalogo.php" class="btn btn-outline-secondary btn-sm">
                             Limpiar filtros
                         </a>
                     </div>
@@ -243,12 +243,16 @@ $juegosFiltrado = filtrarPorPlataforma($juegos, $plat);
                                     <?php
                                     if ($juego["stock"] > 0) {
                                     ?>
-                                        <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
-                                    <?php } else { ?>
-                                        <a href="#" class="btn btn-sm btn-primary disabled">+ Carrito</a>
+                                        <a href="carrito.php" class="btn btn-sm btn-primary">
+                                        <form action="carrito.php" method="POST">
+                                            <input type="hidden" name="accion" value="agregar">
+                                            <input type="hidden" name="id" value="<?= $juego["id"] ?>">
+                                            <input type="hidden" name="cantidad" value="1">
+                                        </form>
+                                        + Carrito</a>
                                     <?php } ?>
                                 </div>
-                                <small class="text-muted"><?php echo estadoStock($juego["stock"]) ?></small>
+                                <small class="<?= estadoStock($juego["stock"]) === "Agotado" ? "text-danger fw-bold" : "text-muted"?>"><?php echo estadoStock($juego["stock"]) ?></small>
                             </div>
 
                             <div class="card-footer bg-transparent">

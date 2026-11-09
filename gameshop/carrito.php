@@ -1,5 +1,6 @@
 <?php
 $title = "Carrito";
+require_once("includes/carrito.php");
 require_once("includes/header.php");
 ?>
 <main class="container my-4">

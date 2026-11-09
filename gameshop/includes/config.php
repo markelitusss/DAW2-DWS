@@ -10,8 +10,14 @@
     //Configuración del carrito (Esto para la UD3)
     define('IVA',0.21);
     define('ENVIO_GRATIS_DESDE',30);
+    define('COSTE_ENVIO', 4.95);
+    define("MAX_POR_PRODUCTO", 10);
 
     //Para cuando nuestra web está en subcarpeta 
     //IMPORTANTE!!!! (pon la ruta a tu subcarpeta)
     define('BASE_URL',"http://localhost/gameshop");
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 ?>

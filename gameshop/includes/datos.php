@@ -51,7 +51,7 @@
     "descripcion" => "Explora y lucha en las Tierras Intermedias, dentro de un mundo abierto espectacular",
     "precio" => 49.99,
     "descuento" => 10,
-    "stock" => 0,
+    "stock" => 2,
     "lanzamiento" => '2022-02-25',
     "valoracion" => 5,
     "destacado" => true
