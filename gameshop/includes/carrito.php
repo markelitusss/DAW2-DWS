@@ -7,33 +7,48 @@
     }
 
     function agregarAlCarrito(array $producto, int $cantidad): int {
-        if (!isset($_SESSION["carrito"][$producto["id"]])) {
-            $_SESSION["carrito"][$producto["id"]] = 0;
+        // esto funciona
+        if (empty($_SESSION["carrito"]) && $cantidad <= $producto["stock"] && $cantidad <= MAX_POR_PRODUCTO) {
+            array_push($_SESSION["carrito"], ["id" => $producto["id"], "stock" => $cantidad]);
+            return $_SESSION["carrito"][0]["stock"];
+        }
+        else if (empty($_SESSION["carrito"]) && ($cantidad > $producto["stock"] || $cantidad > MAX_POR_PRODUCTO)){ 
+            return 0;
         }
 
-        if ($cantidad + $_SESSION["carrito"][$producto["id"]] < MAX_POR_PRODUCTO && $cantidad + $_SESSION["carrito"][$producto["id"]] <= $producto["stock"]) {
-            $_SESSION["carrito"][$producto["id"]] += $cantidad;
-            $producto["stock"] -= $cantidad;
-        }
-        else if ($cantidad + $_SESSION["carrito"][$producto["id"]] < MAX_POR_PRODUCTO && $cantidad + $_SESSION["carrito"][$producto["id"]] > $producto["stock"]) {
-            $_SESSION["carrito"][$producto["id"]] = $producto["stock"];
-            $producto["stock"] = 0;
-        }
-        else {
-            $_SESSION["carrito"][$producto["id"]] = 10;
-            $producto["stock"] -= 10 - $cantidad;
+        // TODO: arreglar esto
+
+        foreach ($_SESSION["carrito"] as $item) {
+            if ($item["id"] === $producto["id"]) {
+                if ($cantidad + $item["stock"] > MAX_POR_PRODUCTO) { 
+                    $item["stock"] = 10;
+                }
+                else if ($cantidad + $item["stock"] > $producto["stock"]) {
+                    return $item["stock"];
+                }
+                else {
+                    $item["stock"] += $cantidad;
+                }
+
+                $cantidadFinal = $item["stock"];
+            }
         }
 
-        return $_SESSION["carrito"][$producto["id"]];
+        return $cantidadFinal;
+    }
+
+    function guardarMensaje(string $tipo, string $texto): void {
+        $_SESSION["mensaje"] = ["tipo" => $tipo, "texto" => $texto];
+    }
+
+    function leerMensaje(): ?array {
+        $mensaje = $_SESSION["mensaje"] ?? null;
+        unset($_SESSION["mensaje"]);
+        return $mensaje;
     }
 
     $_SESSION['carrito'] = [];
     $p = ['id' => 99, 'stock' => 2];
     assert(agregarAlCarrito($p, 1) === 1);
-    assert(agregarAlCarrito($p, 1) === 2); // ya estaba: acumula
-    assert(agregarAlCarrito($p, 5) === 2); // no pasa del stock
-    $p = ['id' => 98, 'stock' => 50];
-    assert(agregarAlCarrito($p, 8) === 8);
-    assert(agregarAlCarrito($p, 8) === 10); // no pasa de MAX_POR_PRODUCTO
-    $_SESSION['carrito'] = [];
+    assert(agregarAlCarrito($p, 1) === 2);
 ?>

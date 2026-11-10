@@ -243,7 +243,7 @@ $juegosFiltrado = filtrarPorPlataforma($juegos, $plat);
                                     <?php
                                     if ($juego["stock"] > 0) {
                                     ?>
-                                        <form action="carrito.php" method="POST">
+                                        <form action="carrito.php" method="post">
                                             <input type="hidden" name="accion" value="agregar">
                                             <input type="hidden" name="id" value="<?= $juego["id"] ?>">
                                             <input type="hidden" name="cantidad" value="1">
