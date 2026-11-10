@@ -18,7 +18,7 @@
         }
         
         $producto = buscarProducto($juegos, $id);
-
+        
         switch ($accion) {
             case "agregar":
                 if (!$producto) {
@@ -39,10 +39,11 @@
                 }
                 break;
         }
-
+        
         header('Location: carrito.php');
         exit;
     }
+    
     
 ?>
 <main class="container my-4">

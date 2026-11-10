@@ -7,34 +7,21 @@
     }
 
     function agregarAlCarrito(array $producto, int $cantidad): int {
-        // esto funciona
-        if (empty($_SESSION["carrito"]) && $cantidad <= $producto["stock"] && $cantidad <= MAX_POR_PRODUCTO) {
-            array_push($_SESSION["carrito"], ["id" => $producto["id"], "stock" => $cantidad]);
-            return $_SESSION["carrito"][0]["stock"];
+        if (!in_array($producto["id"], array_keys($_SESSION["carrito"]))) {
+            $_SESSION["carrito"][$producto["id"]] = $cantidad;
         }
-        else if (empty($_SESSION["carrito"]) && ($cantidad > $producto["stock"] || $cantidad > MAX_POR_PRODUCTO)){ 
-            return 0;
+        else {
+            $_SESSION["carrito"][$producto["id"]] += $cantidad;
         }
 
-        // TODO: arreglar esto
-
-        foreach ($_SESSION["carrito"] as $item) {
-            if ($item["id"] === $producto["id"]) {
-                if ($cantidad + $item["stock"] > MAX_POR_PRODUCTO) { 
-                    $item["stock"] = 10;
-                }
-                else if ($cantidad + $item["stock"] > $producto["stock"]) {
-                    return $item["stock"];
-                }
-                else {
-                    $item["stock"] += $cantidad;
-                }
-
-                $cantidadFinal = $item["stock"];
-            }
+        if ($_SESSION["carrito"][$producto["id"]] > MAX_POR_PRODUCTO) {
+            $_SESSION["carrito"][$producto["id"]] = 10;
+        }
+        else if ($_SESSION["carrito"][$producto["id"]] > $producto["stock"]) {
+            $_SESSION["carrito"][$producto["id"]] = $producto["stock"];
         }
 
-        return $cantidadFinal;
+        return $_SESSION["carrito"][$producto["id"]];
     }
 
     function guardarMensaje(string $tipo, string $texto): void {
@@ -46,9 +33,4 @@
         unset($_SESSION["mensaje"]);
         return $mensaje;
     }
-
-    $_SESSION['carrito'] = [];
-    $p = ['id' => 99, 'stock' => 2];
-    assert(agregarAlCarrito($p, 1) === 1);
-    assert(agregarAlCarrito($p, 1) === 2);
 ?>
