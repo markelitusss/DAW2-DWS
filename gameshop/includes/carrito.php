@@ -7,6 +7,10 @@
     }
 
     function agregarAlCarrito(array $producto, int $cantidad): int {
+        if (!isset($_SESSION["carrito"])) {
+            $_SESSION["carrito"] = [];
+        }
+
         if (!in_array($producto["id"], array_keys($_SESSION["carrito"]))) {
             $_SESSION["carrito"][$producto["id"]] = $cantidad;
         }
@@ -33,4 +37,21 @@
         unset($_SESSION["mensaje"]);
         return $mensaje;
     }
+
+    function lineasCarrito(array $productos): array {
+        $lineas = [];
+        foreach (obtenerCarrito() as $id => $cantidad) {
+            $producto = buscarProducto($productos, $id);
+
+            if (is_null($producto)) {
+                continue;
+            }
+            else {
+                array_push($lineas, ["producto" => $producto["game_title"], "cantidad" => $cantidad, "unitario" => precio_formateado(precioFinal($producto)), "subtotal" => precio_formateado(precioFinal($producto) * $cantidad)]);
+            }
+        }
+
+        return $lineas;
+    }
+
 ?>

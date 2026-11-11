@@ -91,4 +91,8 @@
 
         return null;
     }
+
+    function precioFinal(array $producto) {
+        return $producto["precio"] - ($producto["precio"] * $producto["descuento"] / 100);
+    }
 ?>

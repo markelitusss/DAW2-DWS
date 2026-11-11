@@ -39,7 +39,7 @@
                 }
                 break;
         }
-        
+
         header('Location: carrito.php');
         exit;
     }
@@ -54,20 +54,38 @@
         <div class="alert alert-<?= $mensaje['tipo'] ?>">
             <?= $mensaje['texto'] ?>
         </div>
-    <?php } ?>
+    <?php } 
+    $lineas = lineasCarrito($juegos);
+    ?>
 
     <div class="text-center py-5">
         <div class="fs-1 mb-3">🛒</div>
-        <h3>Carrito en construcción</h3>
-        <p class="text-muted">Lo implementaremos en UD3 con $_SESSION.</p>
+        <h3 class="mb-4">Mi carrito</h3>
 
+        <?php
+            if (empty($lineas)) {
+                echo "Tu carrito está vacío";
+            }
+            else { ?>
+            <table class="table">
+                <tr class="table-dark">
+                    <th>Juego</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+                <?php foreach ($lineas as $linea) { ?>
+                <tr>
+                    <td><?= $linea["producto"] ?></td>
+                    <td><?= $linea["unitario"] ?></td>
+                    <td><?= $linea["cantidad"] ?></td>
+                    <td><?= $linea["subtotal"] ?></td>
+                </tr>
+                <?php } ?>
+            </table>
+        <?php } ?>
 
-        <!-- Feedback didáctico:  -->
-        <div class="alert alert-info d-inline-block mt-3">
-            <?php var_dump(obtenerCarrito()) ?>
-        </div>
-
-        <div class="mt-3">
+        <div class="mt-5">
             <a href="catalogo.php" class="btn btn-primary">← Volver al catálogo</a>
         </div>
     </div>
