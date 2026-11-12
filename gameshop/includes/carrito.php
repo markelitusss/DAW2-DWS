@@ -7,10 +7,6 @@
     }
 
     function agregarAlCarrito(array $producto, int $cantidad): int {
-        if (!isset($_SESSION["carrito"])) {
-            $_SESSION["carrito"] = [];
-        }
-
         if (!in_array($producto["id"], array_keys($_SESSION["carrito"]))) {
             $_SESSION["carrito"][$producto["id"]] = $cantidad;
         }
@@ -26,6 +22,25 @@
         }
 
         return $_SESSION["carrito"][$producto["id"]];
+    }
+
+    function eliminarDelCarrito(int $id): void {
+        unset($_SESSION["carrito"][$id]);
+    }
+
+    function vaciarCarrito(): void {
+        $_SESSION["carrito"] = [];
+    }
+
+    function actualizarCantidad(array $producto, int $cantidad): void {
+        $_SESSION["carrito"][$producto["id"]] = $cantidad;
+
+        if ($_SESSION["carrito"][$producto["id"]] > MAX_POR_PRODUCTO) {
+            $_SESSION["carrito"][$producto["id"]] = 10;
+        }
+        else if ($_SESSION["carrito"][$producto["id"]] > $producto["stock"]) {
+            $_SESSION["carrito"][$producto["id"]] = $producto["stock"];
+        }
     }
 
     function guardarMensaje(string $tipo, string $texto): void {
@@ -47,11 +62,37 @@
                 continue;
             }
             else {
-                array_push($lineas, ["producto" => $producto["game_title"], "cantidad" => $cantidad, "unitario" => precio_formateado(precioFinal($producto)), "subtotal" => precio_formateado(precioFinal($producto) * $cantidad)]);
+                array_push($lineas, ["id"=> $id, "producto" => $producto["game_title"], "cantidad" => $cantidad, "unitario" => precio_formateado(precioFinal($producto)), "subtotal" => precioFinal($producto) * $cantidad]);
             }
         }
 
         return $lineas;
+    }
+
+    function totalesCarrito(array $lineas): array {
+        $productos = round(array_sum(array_column($lineas, 'subtotal')), 2);
+        
+        if (!$productos || $productos >= ENVIO_GRATIS_DESDE) {
+            $envio = 0;
+        }
+        else {
+            $envio = COSTE_ENVIO;
+        }
+        $total = $productos + $envio;
+        $base = $total / 1.21;
+        $iva = $total - $base;
+        return [
+            'productos' => $productos,
+            'envio' => $envio,
+            'total' => $total,
+            'base' => $base,
+            'iva' => $iva,
+            'faltaEnvioGratis' => $envio === 0 ? 0 : ENVIO_GRATIS_DESDE - $productos
+        ];
+    }
+
+    function unidadesEnCarrito(): int {
+        return array_sum(array_values($_SESSION["carrito"]));
     }
 
 ?>

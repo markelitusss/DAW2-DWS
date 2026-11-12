@@ -9,7 +9,7 @@
 
     //Configuración del carrito (Esto para la UD3)
     define('IVA',0.21);
-    define('ENVIO_GRATIS_DESDE',30);
+    define('ENVIO_GRATIS_DESDE', 50);
     define('COSTE_ENVIO', 4.95);
     define("MAX_POR_PRODUCTO", 10);
 
@@ -19,5 +19,9 @@
 
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
+    }
+
+    if (!isset($_SESSION["carrito"])) {
+        $_SESSION["carrito"] = [];
     }
 ?>

@@ -1,5 +1,6 @@
 <?php
   require_once("config.php");
+  require_once("includes/carrito.php");
 ?>
 
 <!doctype html>
@@ -48,8 +49,10 @@
           <!-- Carrito con badge -->
           <a href="carrito.php" class="btn btn-outline-light btn-sm position-relative">
             <i class="bi bi-cart3"></i>
+            <?php if (unidadesEnCarrito() !== 0) { ?>
             <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1</span>
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><?= unidadesEnCarrito() ?></span>
+            <?php } ?>
           </a>
           <!-- Login / Usuario (UD3 en adelante) -->
           <span class="text-light small">Hola, Paco</span>

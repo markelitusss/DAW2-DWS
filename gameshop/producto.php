@@ -80,12 +80,12 @@ require_once("includes/header.php");
             </div>
 
             <!-- Versión UD2: enlace GET -->
-            <a href="#"
+            <a href="carrito.php"
                 class="btn btn-primary btn-lg me-2">
                 🛒 Añadir al carrito
             </a>
 
-            <a href="catalogo.html" class="btn btn-outline-secondary btn-lg">
+            <a href="catalogo.php" class="btn btn-outline-secondary btn-lg">
                 ← Volver al catálogo
             </a>
 

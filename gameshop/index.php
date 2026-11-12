@@ -55,7 +55,7 @@ assert(generarSlug(' ¡Hola, mundo! ') === 'hola-mundo');
   <!-- 3.- Grid de Productos Destacados-->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0">Destacados</h5>
-    <a href="#" class="btn btn-sm btn-outline-secondary">Ver todos →</a>
+    <a href="catalogo.php" class="btn btn-sm btn-outline-secondary">Ver todos →</a>
   </div>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
     <?php 
@@ -110,7 +110,12 @@ assert(generarSlug(' ¡Hola, mundo! ') === 'hola-mundo');
              <?php 
               if ($juego["stock"] > 0) {
                 ?>
-                <a href="#" class="btn btn-sm btn-primary">+ Carrito</a>
+                <form action="carrito.php" method="post">
+                  <input type="hidden" name="accion" value="agregar">
+                  <input type="hidden" name="id" value="<?= $juego["id"] ?>">
+                  <input type="hidden" name="cantidad" value="1">
+                  <button type="submit" class="btn btn-sm btn-primary">+ Carrito</button>
+                </form>
               <?php } ?>
           </div>
           <small class="<?= estadoStock($juego["stock"]) === "Agotado" ? "text-danger fw-bold" : "text-muted"?>"><?php echo estadoStock($juego["stock"]) ?></small>
