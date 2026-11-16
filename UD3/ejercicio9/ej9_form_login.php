@@ -10,9 +10,6 @@
         $errores = $_SESSION["errores"];
         unset($_SESSION["errores"]);
     }
-    else {
-        $errores = [];
-    }
 
     if (isset($_SESSION["old_input"])) {
         $old = $_SESSION["old_input"];
@@ -39,14 +36,12 @@
 </head>
 <body>
     <main class="container">
-        <?php if (!empty($errores)) { ?>
+        <?php if (isset($errores)) { ?>
             <div class="alert alert-danger mt-3">
-                <?php foreach ($errores as $error) { ?>
-                    <p><?= $error ?></p>
-                <?php } ?>
+                <p><?= $errores ?></p>
             </div>
         <?php } ?>
-        <form action="ej4_result_login.php" method="POST">
+        <form action="ej9_result_form_login.php" method="POST">
             <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['csrf']) ?>">
             <div class="mt-3 mb-3">
                 <label for="user" class="form-label">Usuario</label>
