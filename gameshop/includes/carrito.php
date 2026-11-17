@@ -87,7 +87,7 @@
             'total' => $total,
             'base' => $base,
             'iva' => $iva,
-            'faltaEnvioGratis' => $envio === 0 ? 0 : ENVIO_GRATIS_DESDE - $productos
+            'faltaEnvioGratis' => $envio === 0 ? 0 : ENVIO_GRATIS_DESDE - $productos - COSTE_ENVIO
         ];
     }
 

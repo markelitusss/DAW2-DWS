@@ -18,6 +18,15 @@
     define('BASE_URL',"http://localhost/gameshop");
 
     if (session_status() === PHP_SESSION_NONE) {
+        ini_set('session.use_strict_mode', '1'); 
+        session_set_cookie_params([
+            'lifetime' => 0, 
+            'path' => '/',
+            'httponly' => true, 
+            'samesite' => 'Lax',
+            'secure' => isset($_SERVER['HTTPS']),
+        ]);
+
         session_start();
     }
 

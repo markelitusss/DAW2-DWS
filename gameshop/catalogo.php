@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
 $title = "Catálogo";
 $plat = "";
-
+require_once("includes/inicio.php");
 require_once("includes/header.php");
-require_once("includes/funciones.php");
-require_once("includes/datos.php");
 
 if (array_key_exists("plat", $_GET)) {
     foreach ($plataformas as $plataforma) {

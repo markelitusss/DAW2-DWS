@@ -1,5 +1,7 @@
 <?php
+  declare(strict_types=1);
   $title = "Login";
+  require_once("includes/inicio.php");
   require_once("includes/header.php");
 
   if (empty($_SESSION["csrf_token"])) {
@@ -57,7 +59,7 @@
           <hr />
           <p class="text-center text-muted small mb-0">
             ¿No tienes cuenta?
-            <a href="registro.html">Regístrate gratis</a>
+            <a href="registro.php">Regístrate gratis</a>
           </p>
         </div>
       </div>

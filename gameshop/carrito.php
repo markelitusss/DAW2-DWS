@@ -1,8 +1,7 @@
 <?php
+    declare(strict_types=1);
     $title = "Carrito";
-    require_once("includes/funciones.php");
-    require_once("includes/carrito.php");
-    require_once("includes/datos.php");
+    require_once("includes/inicio.php");
     require_once("includes/header.php");
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -12,7 +11,7 @@
         }
         if (isset($_POST["id"]) && !empty($_POST["id"])) {
             $id = htmlspecialchars($_POST["id"]);
-            $producto = buscarProducto($juegos, $id);
+            $producto = buscarProducto($juegos, intval($id));
         }
         if (isset($_POST["cantidad"]) && !empty($_POST["cantidad"])) {
             $cantidad = htmlspecialchars($_POST["cantidad"]);
@@ -33,25 +32,25 @@
                     guardarMensaje("warning", "Solo puedes llevar " . $producto["stock"] . " unidad(es) de '$producto[game_title]'");
                 }
                 else {
-                    agregarAlCarrito($producto, $cantidad);
+                    agregarAlCarrito($producto, intval($cantidad));
                     guardarMensaje("success", "'$producto[game_title]' añadido al carrito");
                 }
                 break;
 
             case "actualizar":
                 if (isset($cantidad)) {
-                    actualizarCantidad($producto, $cantidad);
+                    actualizarCantidad($producto, intval($cantidad));
                     if ($producto["stock"] < $cantidad || $producto["stock"] < obtenerCarrito()[$id]) {
                         guardarMensaje("warning", "Solo puedes llevar " . $producto["stock"] . " unidad(es) de '$producto[game_title]'");
                     }
                 }
                 else {
-                    eliminarDelCarrito($id);
+                    eliminarDelCarrito(intval($id));
                 }
                 break;
 
             case "eliminar":
-                eliminarDelCarrito($id);
+                eliminarDelCarrito(intval($id));
                 break;
 
             case "vaciar":

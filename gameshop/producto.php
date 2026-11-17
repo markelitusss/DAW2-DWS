@@ -1,5 +1,7 @@
 <?php
+declare(strict_types=1);
 $title = "Producto";
+require_once("includes/inicio.php");
 require_once("includes/header.php");
 ?>
 <main class="container my-4">

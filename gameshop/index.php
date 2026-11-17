@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 $title = "Inicio";
+require_once("includes/inicio.php");
 require_once("includes/header.php");
-require_once("includes/funciones.php");
-require_once("includes/datos.php");
 
 // Comprobaciones previas
 assert(count(obtenerDestacados($juegos)) === 4);
