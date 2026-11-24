@@ -2,10 +2,19 @@
     declare(strict_types=1);
     require_once 'includes/inicio.php';
 
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $_SESSION["csrf"] = bin2hex(random_bytes(32));
+    }
+
     $errores = [];
     $datos = ['nombre' => '', 'email' => ''];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!isset($_SESSION["csrf"]) && !isset($_POST["csrf"]) && $_SESSION["csrf"] !== $_POST["csrf"]) {
+          header("Location: registro.php");
+          exit;
+        }
+
         $datos['nombre'] = trim((string) ($_POST['nombre'] ?? ''));
         $datos['email'] = trim((string) ($_POST['email'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
@@ -35,20 +44,17 @@ require_once("includes/header.php");
         <div class="card-body p-4">
           <h2 class="h4 mb-4 text-center">Registro</h2>
 
-          <!-- Error general (email/contraseña incorrectos o CSRF) -->
-
-          <div class="alert alert-danger">email incorrecto</div>
-
-          <form method="POST" action="myform.php" novalidate>
-            <input type="hidden" name="csrf_token" value="" />
+          <form method="POST" action="registro.php">
+            <input type="hidden" name="csrf" value="<?= $_SESSION["csrf"] ?>" />
             
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
               <input 
                 type="text" 
-                class="form-control" 
+                class="form-control <?= isset($errores)?>" 
                 id="nombre" 
-                name="nombre" 
+                name="nombre"
+                value="<?= isset($datos["nombre"]) ? htmlspecialchars($datos["nombre"]) : "" ?>" 
                 autofocus 
                 required>
             </div>
@@ -60,7 +66,8 @@ require_once("includes/header.php");
                 id="email"
                 name="email"
                 class="form-control"
-                autocomplete="email"
+                autocomplete="new-password"
+                value="<?= isset($datos["email"]) ? htmlspecialchars($datos["email"]) : "" ?>"
                 required />
             </div>
 
@@ -71,7 +78,7 @@ require_once("includes/header.php");
                 id="password"
                 name="password"
                 class="form-control"
-                autocomplete="current-password"
+                autocomplete="new-password"
                 required />
             </div>
 
@@ -82,7 +89,6 @@ require_once("includes/header.php");
                 id="password2"
                 name="password2"
                 class="form-control"
-                autocomplete="current-password"
                 required />
             </div>
 

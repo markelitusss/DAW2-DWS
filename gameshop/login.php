@@ -19,7 +19,7 @@
 
           <div class="alert alert-danger">email incorrecto</div>
 
-          <form method="POST" action="myform.php" novalidate>
+          <form method="POST" action="myform.php">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"]) ?>" />
             
             <div class="mb-3">

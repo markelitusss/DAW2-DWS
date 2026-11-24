@@ -43,7 +43,7 @@ function crearUsuario(string $nombre, string $email, string $password): array {
         "nombre" => $nombre,
         "email" => mb_strtolower($email),
         "password" => password_hash($password, PASSWORD_DEFAULT),
-        "creado" => time()
+        "creado" => date('Y-m-d-H:i:s', time())
     ];
 
     guardarUsuarios($usuario);
@@ -52,42 +52,44 @@ function crearUsuario(string $nombre, string $email, string $password): array {
 
 function validarRegistro(string $nombre, string $email, string $password, string $password2): array {
     $errores = [];
+    
     if (mb_strlen(trim($nombre)) < 2 || mb_strlen(trim($nombre)) > 50) {
-        array_push($errores, "El nombre debe tener entre 2 y 50 caracteres");
+        $errores["nombre"] = "El nombre debe tener entre 2 y 50 caracteres.";
     }
     if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-        array_push($errores, "Escribe un email válido");
+        $errores["email"] = "Escribe un email válido.";
     }
     if (!is_null(buscarUsuarioPorEmail($email))) {
-        array_push($errores, "Ya existe una cuenta con ese email");
+        $errores["email"] = "Ya existe una cuenta con ese email.";
     }
     if (mb_strlen($password) < 8) {
-        array_push($errores, "La contraseña debe tener al menos 8 caracteres");
+        $errores["password"] = "La contraseña debe tener al menos 8 caracteres.";
     }
     if (mb_strlen($password) > 72) {
-        array_push($errores, "La contraseña no puede superar los 72 caracteres");
+        $errores["password"] = "La contraseña no puede superar los 72 caracteres.";
     }
-    if (!preg_match("/[a-zA-Z0-9]/", $password)) {
-        array_push($errores, "La contraseña debe tener al menos una letra y un número");
+    if (!preg_match("/[a-zA-Z][0-9]/", $password)) {
+        $errores["password"] = "La contraseña debe tener al menos una letra y un número.";
     }
     if ($password !== $password2) {
-        array_push($errores, "Las contraseñas no coinciden");
+        $errores["password2"] = "Las contraseñas no coinciden.";
     }
 
     return $errores;
 }
 
-// funciona si se cambia isset por !isset
-assert(validarRegistro('Ana', 'ana@test.es', 'secreto123', 'secreto123') === []);
-assert(!isset(validarRegistro('A', 'ana@test.es', 'secreto123',
+
+assert(validarRegistro('Ana', 'ana@test.es', 'secreto123', 'secreto123')
+=== []);
+assert(isset(validarRegistro('A', 'ana@test.es', 'secreto123',
 'secreto123')['nombre']));
-assert(!isset(validarRegistro('Ana', 'ana@', 'secreto123',
+assert(isset(validarRegistro('Ana', 'ana@', 'secreto123',
 'secreto123')['email']));
-assert(!isset(validarRegistro('Ana', 'ana@test.es', 'corta1',
+assert(isset(validarRegistro('Ana', 'ana@test.es', 'corta1',
 'corta1')['password']));
-assert(!isset(validarRegistro('Ana', 'ana@test.es', 'sololetras',
+assert(isset(validarRegistro('Ana', 'ana@test.es', 'sololetras',
 'sololetras')['password']));
-assert(!isset(validarRegistro('Ana', 'ana@test.es', 'secreto123',
+assert(isset(validarRegistro('Ana', 'ana@test.es', 'secreto123',
 'secreto124')['password2']));
 
 ?>
