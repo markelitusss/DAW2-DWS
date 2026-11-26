@@ -55,9 +55,26 @@
             <?php } ?>
           </a>
           <!-- Login / Usuario (UD3 en adelante) -->
-          <span class="text-light small">Hola, Paco</span>
-          <a href="index.php" class="btn btn-outline-secondary btn-sm">Salir</a>
+          <?php if ($usuario = usuarioActual()): ?>
+          <span class="text-light small">Hola, <strong><?= $_SESSION["usuario"]["nombre"] ?></strong></span>
+          <form method="post" action="logout.php" class="m-0">
+          <button type="submit" class="btn btn-sm btn-outline-light">Cerrar
+          sesión</button>
+          </form>
+          <?php else: ?>
+          <a href="login.php" class="btn btn-primary">Iniciar sesión</a>
+          <a href="registro.php" class="btn btn-secondary">Crear cuenta</a>
+          <?php endif; ?>
         </div>
       </div>
     </div>
   </nav>
+  <?php
+  // mostrar mensajes
+    $mensaje = leerMensaje(); 
+    if ($mensaje) { 
+    ?>
+        <div class="container mt-3 alert alert-<?= $mensaje['tipo'] ?>">
+            <?= $mensaje['texto'] ?>
+        </div>
+    <?php } ?>

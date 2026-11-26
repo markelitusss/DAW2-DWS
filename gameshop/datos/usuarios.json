@@ -1,3 +1,16 @@
 [
-    
+    {
+        "id": 1,
+        "nombre": "test",
+        "email": "test@gmail.com",
+        "password": "$2y$10$xpp\/FO.tPYs\/Fs\/yS6UmlOPL99MArgT5TD6oq8RKSRYagTDhOuPA.",
+        "creado": "2026-11-26-08:26:37"
+    },
+    {
+        "id": 2,
+        "nombre": "test2",
+        "email": "test2@gmail.com",
+        "password": "$2y$10$yauDjiMAeGMCpwQNJUm2Fu22tTeohXwTx7JdhSYFKpOtr.1IhPkfi",
+        "creado": "2026-11-26-08:26:52"
+    }
 ]

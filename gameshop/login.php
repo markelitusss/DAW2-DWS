@@ -5,8 +5,24 @@
   require_once("includes/header.php");
 
   if (empty($_SESSION["csrf_token"])) {
-    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+    $_SESSION["csrf"] = bin2hex(random_bytes(32));
   }
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim((string) ($_POST['email'] ?? ''));
+    $password = (string) ($_POST['password'] ?? '');
+    $usuario = buscarUsuarioPorEmail($email);
+
+    if ($usuario !== null && password_verify($password, $usuario['password'])) {
+      iniciarSesion($usuario);
+      guardarMensaje('success', 'Bienvenido/a, ' . $usuario['nombre'] . '.');
+      header('Location: catalogo.php');
+      exit;
+    }
+
+    $error = 'Email o contraseña incorrectos.';
+  }
+
 ?>
 <main class="container my-4">
   <div class="row justify-content-center">
@@ -16,16 +32,13 @@
           <h2 class="h4 mb-4 text-center">Iniciar sesión</h2>
 
           <!-- Error general (email/contraseña incorrectos o CSRF) -->
+          <?php if (isset($error)) { ?>
+          <div class="alert alert-danger"><?= $error ?></div>
+          <?php } ?>
 
-          <div class="alert alert-danger">email incorrecto</div>
-
-          <form method="POST" action="myform.php">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"]) ?>" />
+          <form method="POST" action="login.php">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf"]) ?>" />
             
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="nombre" ariadescribedby="nombreHelp" name="nombre" autofocus required>
-            </div>
             <!-- EMAIL -->
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>

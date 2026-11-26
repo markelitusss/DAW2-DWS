@@ -20,7 +20,7 @@ function guardarUsuarios(array $usuarios): void {
 }
 
 function buscarUsuarioPorEmail(string $email): ?array {
-    trim(mb_strtolower($email));
+    $email = trim(mb_strtolower($email));
     foreach (obtenerUsuarios() as $usuario) {
         if ($usuario["email"] === $email) {
             return $usuario;
@@ -31,7 +31,9 @@ function buscarUsuarioPorEmail(string $email): ?array {
 }
 
 function crearUsuario(string $nombre, string $email, string $password): array {
-    if (empty(obtenerUsuarios())) {
+    $usuarios = obtenerUsuarios();
+
+    if (empty($usuarios)) {
         $id = 1;
     }
     else {
@@ -46,7 +48,8 @@ function crearUsuario(string $nombre, string $email, string $password): array {
         "creado" => date('Y-m-d-H:i:s', time())
     ];
 
-    guardarUsuarios($usuario);
+    array_push($usuarios, $usuario);
+    guardarUsuarios($usuarios);
     return $usuario;
 }
 

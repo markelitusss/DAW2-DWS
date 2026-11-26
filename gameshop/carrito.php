@@ -70,15 +70,8 @@
 ?>
 <main class="container my-4">
     <?php
-    $mensaje = leerMensaje(); 
-    if ($mensaje) { 
-    ?>
-        <div class="alert alert-<?= $mensaje['tipo'] ?>">
-            <?= $mensaje['texto'] ?>
-        </div>
-    <?php } 
-    $lineas = lineasCarrito($juegos);
-    $totales = totalesCarrito($lineas);
+        $lineas = lineasCarrito($juegos);
+        $totales = totalesCarrito($lineas);
     ?>
 
     <div class="text-center py-5 clearfix">
@@ -123,7 +116,11 @@
                 </tr>
                 <?php } ?>
             </table>
-            <div class="card ms-5 p-0 w-50 float-end">
+            <form action="carrito.php" method="post" class="mb-3 d-flex justify-content-end">
+                <input type="hidden" name="accion" value="vaciar">
+                <button type="submit" class="btn btn-outline-danger">Vaciar carrito</button>
+            </form>
+            <div class="card col-6 mx-auto p-0 w-50">
                 <div class="card-header">
                     <h5>Resumen del pedido</h5>
                     <div class="d-flex justify-content-between">
@@ -153,13 +150,10 @@
                     </div>
                 </div>
             </div>
+            <a href="checkout.php" class="btn btn-success w-25 mt-5">Finalizar compra</a>
         <?php } ?>
-        <div class="mt-5 d-flex">
-            <a href="catalogo.php" class="btn btn-primary me-3">← Volver al catálogo</a>
-            <form action="carrito.php" method="post">
-                <input type="hidden" name="accion" value="vaciar">
-                <button type="submit" class="btn btn-outline-danger ">Vaciar carrito</button>
-            </form>
+        <div>
+            <a href="catalogo.php" class="btn btn-primary w-25 mt-3">← Volver al catálogo</a>
         </div>
     </div>
 </main>

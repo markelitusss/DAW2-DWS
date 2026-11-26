@@ -51,13 +51,17 @@ require_once("includes/header.php");
               <label for="nombre" class="form-label">Nombre</label>
               <input 
                 type="text" 
-                class="form-control <?= isset($errores)?>" 
+                class="form-control <?= isset($errores["nombre"]) ? "is-invalid" : "" ?>" 
                 id="nombre" 
                 name="nombre"
                 value="<?= isset($datos["nombre"]) ? htmlspecialchars($datos["nombre"]) : "" ?>" 
                 autofocus 
                 required>
+              <div class="invalid-feedback">
+                <?= isset($errores["nombre"]) ? $errores["nombre"] : "" ?>
+              </div>
             </div>
+            
 
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
@@ -65,10 +69,13 @@ require_once("includes/header.php");
                 type="email"
                 id="email"
                 name="email"
-                class="form-control"
+                class="form-control <?= isset($errores["email"]) ? "is-invalid" : "" ?>"
                 autocomplete="new-password"
                 value="<?= isset($datos["email"]) ? htmlspecialchars($datos["email"]) : "" ?>"
                 required />
+              <div class="invalid-feedback">
+                <?= isset($errores["email"]) ? $errores["email"] : "" ?>
+              </div>
             </div>
 
             <div class="mb-4">
@@ -77,9 +84,12 @@ require_once("includes/header.php");
                 type="password"
                 id="password"
                 name="password"
-                class="form-control"
+                class="form-control <?= isset($errores["password"]) ? "is-invalid" : "" ?>"
                 autocomplete="new-password"
                 required />
+              <div class="invalid-feedback">
+                <?= isset($errores["password"]) ? $errores["password"] : "" ?>
+              </div>
             </div>
 
             <div class="mb-4">
@@ -88,8 +98,11 @@ require_once("includes/header.php");
                 type="password"
                 id="password2"
                 name="password2"
-                class="form-control"
+                class="form-control <?= isset($errores["password2"]) ? "is-invalid" : "" ?>"
                 required />
+              <div class="invalid-feedback">
+                <?= isset($errores["password2"]) ? $errores["password2"] : "" ?>
+              </div>
             </div>
 
             <button type="submit" class="btn btn-primary w-100">

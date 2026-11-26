@@ -95,4 +95,8 @@
     function precioFinal(array $producto) {
         return $producto["precio"] - ($producto["precio"] * $producto["descuento"] / 100);
     }
+
+    function e(string $texto): string{
+        return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+    }
 ?>
